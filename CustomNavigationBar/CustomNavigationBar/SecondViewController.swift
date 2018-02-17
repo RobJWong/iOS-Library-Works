@@ -31,23 +31,8 @@ class SecondViewController: UIViewController {
         let backButton = UIBarButtonItem(image:UIImage(named:"icon_back"), style:.plain, target:self, action:#selector(SecondViewController.buttonAction(_:)))
         //backButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = backButton
-        
-        //let backBarButton = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(backButtonTapped(sender:))) as UIBarButtonItem
-        
-//        let backButton = UIButton(type: .system)
-//        backButton.setImage(#imageLiteral(resourceName: "icon_back"), for: .normal)
-//        let backBarButton = UIBarButtonItem.init(customView: backButton)
-//        navigationItem.setLeftBarButton(backBarButton, animated: true)
-        
-//        let backButton = UIButton(type: .system)
-//        backButton.setImage(#imageLiteral(resourceName: "icon_back"), for: .normal)
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+    
     }
-        
-//        let backBarButton = UIBarButtonItem.init(barButtonSystemItem: .sy, target: self, action: #selector(backButtonTapped(sender:))) as UIBarButtonItem
-//
-//        navigationItem.setLeftBarButton(backBarButton, animated: true)
-//    }
     
     @objc func buttonAction(_ sender: UIBarButtonItem) {
         self.navigationController?.popViewController(animated: true)
