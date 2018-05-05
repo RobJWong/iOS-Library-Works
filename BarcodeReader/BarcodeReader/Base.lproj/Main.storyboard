@@ -32,6 +32,11 @@
                             <constraint firstItem="nDr-zT-03E" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="FL0-oZ-FSy"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="nDr-zT-03E"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="square" destination="nDr-zT-03E" id="fgv-hP-vge"/>
