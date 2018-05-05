@@ -71,27 +71,40 @@ class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 //    }
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        if metadataObjects.count == 0 {
-            qrCodeFrameView?.frame = CGRect.zero
-            //messageLabel.text = "No QR code is detected"
-            print("nothing")
-            return
-        }
-        
-        let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
-        
-        if supportedCodeTypes.contains(metadataObj.type) {
-            // If the found metadata is equal to the QR code metadata (or barcode) then update the status label's text and set the bounds
-            let barCodeObject = video.transformedMetadataObject(for: metadataObj)
-            qrCodeFrameView?.frame = barCodeObject!.bounds
-            
-            if metadataObj.stringValue != nil {
-                //launchApp(decodedURL: metadataObj.stringValue!)
-                //messageLabel.text = metadataObj.stringValue
-                print(metadataObj.stringValue)
+        if metadataObjects.count != 0 && metadataObjects != nil
+        {
+            if let object = metadataObjects[0] as? AVMetadataMachineReadableCodeObject
+            {
+                if supportedCodeTypes.contains(object.type)
+                {
+                    print(object.stringValue)
+                }
             }
         }
     }
+    
+//    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+//        if metadataObjects.count == 0 {
+//            qrCodeFrameView?.frame = CGRect.zero
+//            //messageLabel.text = "No QR code is detected"
+//            print("nothing")
+//            return
+//        }
+//
+//        let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+//
+//        if supportedCodeTypes.contains(metadataObj.type) {
+//            // If the found metadata is equal to the QR code metadata (or barcode) then update the status label's text and set the bounds
+//            let barCodeObject = video.transformedMetadataObject(for: metadataObj)
+//            qrCodeFrameView?.frame = barCodeObject!.bounds
+//
+//            if metadataObj.stringValue != nil {
+//                //launchApp(decodedURL: metadataObj.stringValue!)
+//                //messageLabel.text = metadataObj.stringValue
+//                print(metadataObj.stringValue)
+//            }
+//        }
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
