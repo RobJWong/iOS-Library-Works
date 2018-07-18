@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  AutolayoutCodeDemo
+//  BarChartDemo
 //
-//  Created by Robert Wong on 7/9/18.
+//  Created by Robert Wong on 7/13/18.
 //  Copyright © 2018 Robert Wong. All rights reserved.
 //
 
@@ -15,14 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
-        window = UIWindow()
-        window?.makeKeyAndVisible()
-        
-        let layout  = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let swipingController = SwipingController(collectionViewLayout: layout)
-        window?.rootViewController = swipingController
         // Override point for customization after application launch.
         return true
     }
