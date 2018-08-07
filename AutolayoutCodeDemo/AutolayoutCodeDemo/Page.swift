@@ -8,6 +8,8 @@
 
 import Foundation
 
+//model holds the data you want to present
+
 struct Page {
     
     let imageName: String
