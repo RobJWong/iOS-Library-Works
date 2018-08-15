@@ -1,5 +1,3 @@
-
-
 import UIKit
 import MobileCoreServices
 import MediaPlayer
@@ -85,10 +83,10 @@ class MergeVideoViewController: UIViewController {
     
     activityMonitor.startAnimating()
     
-    // 1 - Create AVMutableComposition object. This object will hold your AVMutableCompositionTrack instances.
+    // Create AVMutableComposition object to hold tracks
     let mixComposition = AVMutableComposition()
     
-    // 2 - Create two video tracks
+    // Locate and get user's selected two video tracks
     guard
       let firstTrack = mixComposition.addMutableTrack(withMediaType: AVMediaType.video,
                                                       preferredTrackID: Int32(kCMPersistentTrackID_Invalid))
@@ -119,7 +117,21 @@ class MergeVideoViewController: UIViewController {
       return
     }
     
-    // 3 - Audio track
+    let mainInstruction = AVMutableVideoCompositionInstruction()
+    mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero,
+                                                CMTimeAdd(firstAsset.duration, secondAsset.duration))
+    
+    let firstInstruction = VideoHelper.videoCompositionInstruction(firstTrack, asset: firstAsset)
+    firstInstruction.setOpacity(0.0, at: firstAsset.duration)
+    let secondInstruction = VideoHelper.videoCompositionInstruction(secondTrack, asset: secondAsset)
+    
+    mainInstruction.layerInstructions = [firstInstruction, secondInstruction]
+    let mainComposition = AVMutableVideoComposition()
+    mainComposition.instructions = [mainInstruction]
+    mainComposition.frameDuration = CMTimeMake(1, 30)
+    mainComposition.renderSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+    
+    //Audio track holder
     if let loadedAudioAsset = audioAsset {
       let audioTrack = mixComposition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: 0)
       do {
@@ -133,27 +145,32 @@ class MergeVideoViewController: UIViewController {
       }
     }
     
-    // 4 - Get path
+    //Access FileManger directory
     guard let documentDirectory = FileManager.default.urls(for: .documentDirectory,
                                                            in: .userDomainMask).first else {
                                                             return
     }
+    
+    //Gets date for filename
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .long
     dateFormatter.timeStyle = .short
     let date = dateFormatter.string(from: Date())
     let url = documentDirectory.appendingPathComponent("mergeVideo-\(date).mov")
     
-    // 5 - Create Exporter
+    //Instatiate the exporter
     guard let exporter = AVAssetExportSession(asset: mixComposition,
                                               presetName: AVAssetExportPresetHighestQuality) else {
                                                 return
     }
+  
+    //Gets output URL and assigns file types
     exporter.outputURL = url
     exporter.outputFileType = AVFileType.mov
     exporter.shouldOptimizeForNetworkUse = true
-    
-    // 6 - Perform the Export
+    exporter.videoComposition = mainComposition
+
+    //Performs the Export
     exporter.exportAsynchronously() {
       DispatchQueue.main.async {
         self.exportDidFinish(exporter)
