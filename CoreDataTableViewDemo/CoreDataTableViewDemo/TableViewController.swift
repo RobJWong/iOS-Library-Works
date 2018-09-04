@@ -46,27 +46,26 @@ class TableViewController: UITableViewController {
 //        performSegue(withIdentifier: "SegueListDetail", sender: selectedRow)
 //    }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-//    {
-//        if let vc = segue.destination as? ChangeViewController {
-//            vc.listEntry = sender as! Person
-//        }
-//        if segue.identifier == "SegueListDetail" {
-//            guard let navigationController = segue.destination as? UINavigationController,
-//                let detailViewController = navigationController.topViewController as? ChangeViewController,
-//                //let indexPath = tableView.indexPathForSelectedRow else {
-//                    fatalError("Application storyboard mis-configuration")
-//            }
-//            // 3
-//            let listEntry = fetchedResultsController.object(at: indexPath)
-//            print("dasdas \(listEntry)")
-//            // 4
-//            detailViewController.listEntry = listEntry
-//            detailViewController.context = listEntry.managedObjectContext
-//            detailViewController.delegate = self
-//        }
-//    }
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        print("before prepare")
+        if segue.identifier == "SegueListDetail" {
+            guard let navigationController = segue.destination as? UINavigationController,
+                let detailViewController = navigationController.topViewController as? ChangeViewController,
+                let indexPath = tableView.indexPathForSelectedRow else {
+                    fatalError("Application storyboard mis-configuration")
+            }
+            print("after segue")
+            // 3
+            let listEntry = fetchedResultsController.object(at: indexPath)
+            print("dasdas \(listEntry)")
+            // 4
+            detailViewController.listEntry = listEntry
+            detailViewController.context = listEntry.managedObjectContext
+            detailViewController.delegate = self
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -126,33 +125,33 @@ class TableViewController: UITableViewController {
 
 }
 
-//extension TableViewController: PersonEntryDelegate {
-//    func didFinish(viewController: ChangeViewController, didSave: Bool) {
-//
-//        guard didSave,
-//            let context = viewController.context,
-//            context.hasChanges else {
-//                dismiss(animated: true)
-//                return
-//        }
-//
-//        context.perform {
-//            do {
-//                try context.save()
-//            } catch let error as NSError {
-//                fatalError("Error: \(error.localizedDescription)")
-//            }
-////            let entity = NSEntityDescription.entity(forEntityName: "Person", in: context)
-////            let person = Person(entity: entity!, insertInto: context)
-////            person.setValue(randomFirstName, forKey: "firstName")
-////            person.setValue(randomLastName, forKey: "lastName")
-////            person.setValue(randomAge, forKey: "age")
-////            appDelegate.saveContext()
-////            people.append(person)
-//
-//            self.tableView.reloadData()
-//        }
-//
-//        dismiss(animated: true)
-//    }
-//}
+extension TableViewController: PersonEntryDelegate {
+    func didFinish(viewController: ChangeViewController, didSave: Bool) {
+
+        guard didSave,
+            let context = viewController.context,
+            context.hasChanges else {
+                dismiss(animated: true)
+                return
+        }
+
+        context.perform {
+            do {
+                try context.save()
+            } catch let error as NSError {
+                fatalError("Error: \(error.localizedDescription)")
+            }
+//            let entity = NSEntityDescription.entity(forEntityName: "Person", in: context)
+//            let person = Person(entity: entity!, insertInto: context)
+//            person.setValue(randomFirstName, forKey: "firstName")
+//            person.setValue(randomLastName, forKey: "lastName")
+//            person.setValue(randomAge, forKey: "age")
+//            appDelegate.saveContext()
+//            people.append(person)
+
+            self.tableView.reloadData()
+        }
+
+        dismiss(animated: true)
+    }
+}

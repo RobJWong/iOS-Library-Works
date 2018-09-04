@@ -9,21 +9,21 @@
 import UIKit
 import CoreData
 
-//protocol PersonEntryDelegate {
-//    func didFinish(viewController: ChangeViewController, didSave: Bool)
-//}
+protocol PersonEntryDelegate {
+    func didFinish(viewController: ChangeViewController, didSave: Bool)
+}
 
 class ChangeViewController: UIViewController {
     
     @IBOutlet weak var dataTextField: UITextField!
     
     var listEntry: Person?
-    //var context: NSManagedObjectContext!
-    //var delegate: PersonEntryDelegate?
+    var context: NSManagedObjectContext!
+    var delegate: PersonEntryDelegate?
     
     @IBAction func saveData(_ sender: UIButton) {
         updateData()
-        //delegate?.didFinish(viewController: self, didSave: true)
+        delegate?.didFinish(viewController: self, didSave: true)
     }
     
     override func viewDidLoad() {
